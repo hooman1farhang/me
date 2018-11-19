@@ -1,0 +1,53 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+# import geopandas as gpd
+import numpy as np
+import os
+
+
+
+
+interview_ds = pd.read_csv('../Dept_24-00013/24-00013_UOF_2008-2017_prepped.csv')
+employment_ds = pd.read_csv('../Dept_24-00013/24-00013_ACS_data/24-00013_ACS_employment/ACS_15_5YR_S2301_with_ann.csv')
+edu_ds = pd.read_csv('../Dept_24-00013/24-00013_ACS_data/24-00013_ACS_education-attainment/ACS_15_5YR_S1501_with_ann.csv')
+edu25_ds = pd.read_csv('../Dept_24-00013/24-00013_ACS_data/24-00013_ACS_education-attainment-over-25/ACS_15_5YR_B15003_with_ann.csv')
+ownerhousing_ds = pd.read_csv('../Dept_24-00013/24-00013_ACS_data/24-00013_ACS_owner-occupied-housing/ACS_15_5YR_S2502_with_ann.csv')
+poverty_ds = pd.read_csv('../Dept_24-00013/24-00013_ACS_data/24-00013_ACS_poverty/ACS_15_5YR_S1701_with_ann.csv')
+income_ds = pd.read_csv('../Dept_24-00013/24-00013_ACS_data/24-00013_ACS_income/ACS_15_5YR_S1903_with_ann.csv')
+race_ds = pd.read_csv('../Dept_24-00013/24-00013_ACS_data/24-00013_ACS_race-sex-age/ACS_15_5YR_DP05_with_ann.csv')
+
+interview_ds.head(10)
+
+new_df = pd.concat([employment_ds, edu_ds, edu25_ds, ownerhousing_ds, poverty_ds, income_ds, race_ds], axis=1, sort=False)
+
+new_df.head()
+
+new_df.shape # Looking at the shape of the dataset.
+
+new_df.columns # Looking into the columns as the information given.
+
+
+new_df = new_df.where(new_df!='(X)', None)
+new_df.head(2)
+
+new_df.columns = new_df.iloc[0] # Replacing the existing headers with the relevant columns' names (those of the first row).
+new_df.drop([0], axis=0, inplace=True) # dropping the first line of the dataset as it contains the headers
+new_df.head()
+new_df.isnull().sum(axis=0)
+
+new_df1 = new_df.dropna(axis=1, thresh=200)
+new_df1.head()
+
+new_df1 = new_df1.T.drop_duplicates().T
+# new_df1
+
+b = new_df1.fillna(method='ffill')
+
+Data Analysis
+
+
+x = np.linspace(0, 10, 30)
+y = np.sin(x)
+
+plt.plot(x, y, 'o', color='black');
+
